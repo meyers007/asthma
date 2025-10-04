@@ -1,0 +1,210 @@
+
+<div class="hidden-form" id="medicationForm">
+    <button type="button" class="close-btn" onclick="closeForm('medicationForm')">×</button>
+    <h4><i class="fa fa-pills"></i> Medication Usage</h4>
+    
+    <!-- Inhaler Usage Section -->
+    <div class="med-section">
+        <label class="med-label"><i class="fa fa-spray-can"></i> Inhaler Usage Today:</label>
+        <div class="med-options">
+            <div class="med-card" data-value="0" data-field="inhalerUsage" onclick="selectMedication(this)">
+                <div class="med-icon none"><i class="fa fa-check-circle"></i></div>
+                <div class="med-text">0 times</div>
+            </div>
+            <div class="med-card" data-value="1-2" data-field="inhalerUsage" onclick="selectMedication(this)">
+                <div class="med-icon mild"><i class="fa fa-circle"></i></div>
+                <div class="med-text">1-2 times</div>
+            </div>
+            <div class="med-card" data-value="3-4" data-field="inhalerUsage" onclick="selectMedication(this)">
+                <div class="med-icon moderate"><i class="fa fa-dot-circle"></i></div>
+                <div class="med-text">3-4 times</div>
+            </div>
+            <div class="med-card" data-value="5+" data-field="inhalerUsage" onclick="selectMedication(this)">
+                <div class="med-icon severe"><i class="fa fa-exclamation-circle"></i></div>
+                <div class="med-text">5+ times</div>
+            </div>
+        </div>
+        <input type="hidden" name="inhalerUsage" id="inhalerUsage-input">
+    </div>
+    
+    <!-- Medication Effectiveness Section -->
+    <div class="med-section">
+        <label class="med-label"><i class="fa fa-thumbs-up"></i> Medication Effectiveness:</label>
+        <div class="med-options">
+            <div class="med-card" data-value="excellent" data-field="effectiveness" onclick="selectMedication(this)">
+                <div class="med-icon none"><i class="fa fa-star"></i></div>
+                <div class="med-text">Excellent</div>
+            </div>
+            <div class="med-card" data-value="good" data-field="effectiveness" onclick="selectMedication(this)">
+                <div class="med-icon mild"><i class="fa fa-thumbs-up"></i></div>
+                <div class="med-text">Good</div>
+            </div>
+            <div class="med-card" data-value="fair" data-field="effectiveness" onclick="selectMedication(this)">
+                <div class="med-icon moderate"><i class="fa fa-meh"></i></div>
+                <div class="med-text">Fair</div>
+            </div>
+            <div class="med-card" data-value="poor" data-field="effectiveness" onclick="selectMedication(this)">
+                <div class="med-icon severe"><i class="fa fa-thumbs-down"></i></div>
+                <div class="med-text">Poor</div>
+            </div>
+        </div>
+        <input type="hidden" name="effectiveness" id="effectiveness-input">
+    </div>
+</div>
+
+<style>
+.hidden-form {
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+.med-section {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 3px solid #17a2b8;
+}
+
+.med-label {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.med-label i {
+    margin-right: 6px;
+    color: #17a2b8;
+    font-size: 12px;
+}
+
+.med-options {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.med-card {
+    flex: 1;
+    min-width: 70px;
+    padding: 8px 4px;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.med-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.med-card.selected {
+    border-color: #17a2b8;
+    background: #e0f7fa;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(23,162,184,0.3);
+}
+
+.med-icon {
+    font-size: 16px;
+    margin-bottom: 4px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.med-icon.none {
+    color: #28a745;
+}
+
+.med-icon.mild {
+    color: #ffc107;
+}
+
+.med-icon.moderate {
+    color: #fd7e14;
+}
+
+.med-icon.severe {
+    color: #dc3545;
+}
+
+.med-text {
+    font-weight: 500;
+    color: #495057;
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.med-card.selected .med-text {
+    color: #17a2b8;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .med-options {
+        gap: 4px;
+    }
+    
+    .med-card {
+        min-width: 60px;
+        padding: 6px 2px;
+    }
+    
+    .med-text {
+        font-size: 10px;
+    }
+}
+</style>
+
+<script>
+function selectMedication(card) {
+    const field = card.dataset.field;
+    const value = card.dataset.value;
+    
+    // Remove selected class from all cards in this group
+    const allCards = document.querySelectorAll(`[data-field="${field}"]`);
+    allCards.forEach(c => c.classList.remove('selected'));
+    
+    // Add selected class to clicked card
+    card.classList.add('selected');
+    
+    // Update hidden input
+    const input = document.getElementById(`${field}-input`);
+    if (input) {
+        input.value = value;
+    }
+    
+    // Add visual feedback
+    card.style.animation = 'pulse 0.3s ease';
+    setTimeout(() => {
+        card.style.animation = '';
+    }, 300);
+    
+    // Auto-update record when medication changes
+    if (typeof updateRecord === 'function') {
+        updateRecord();
+    }
+}
+
+// Add pulse animation for medication cards
+if (!document.querySelector('#med-pulse-style')) {
+    const style = document.createElement('style');
+    style.id = 'med-pulse-style';
+    style.textContent = `
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    `;
+    document.head.appendChild(style);
+}
+</script>

@@ -1,0 +1,229 @@
+<!-- Hidden Forms -->
+<div class="hidden-form" id="symptomsForm">
+    <button type="button" class="close-btn" onclick="closeForm('symptomsForm')">×</button>
+    <h4><i class="fa fa-heartbeat"></i> Current Symptoms</h4>
+    
+    <!-- Breathing Difficulty Section -->
+    <div class="symptom-section">
+        <label class="symptom-label"><i class="fa fa-lungs"></i> Breathing Difficulty:</label>
+        <div class="symptom-options">
+            <div class="symptom-card" data-value="mild" data-field="breathing" onclick="selectSymptom(this)">
+                <div class="symptom-icon mild"><i class="fa fa-meh"></i></div>
+                <div class="symptom-text">Mild</div>
+            </div>
+            <div class="symptom-card" data-value="moderate" data-field="breathing" onclick="selectSymptom(this)">
+                <div class="symptom-icon moderate"><i class="fa fa-frown"></i></div>
+                <div class="symptom-text">Moderate</div>
+            </div>
+            <div class="symptom-card" data-value="severe" data-field="breathing" onclick="selectSymptom(this)">
+                <div class="symptom-icon severe"><i class="fa fa-dizzy"></i></div>
+                <div class="symptom-text">Severe</div>
+            </div>
+        </div>
+        <input type="hidden" name="breathing" id="breathing-input">
+    </div>
+    
+    <!-- Cough Frequency Section -->
+    <div class="symptom-section">
+        <label class="symptom-label"><i class="fa fa-head-side-cough"></i> Cough Frequency:</label>
+        <div class="symptom-options">
+            <div class="symptom-card" data-value="occasional" data-field="cough" onclick="selectSymptom(this)">
+                <div class="symptom-icon mild"><i class="fa fa-clock"></i></div>
+                <div class="symptom-text">Occasional</div>
+            </div>
+            <div class="symptom-card" data-value="frequent" data-field="cough" onclick="selectSymptom(this)">
+                <div class="symptom-icon moderate"><i class="fa fa-redo"></i></div>
+                <div class="symptom-text">Frequent</div>
+            </div>
+            <div class="symptom-card" data-value="persistent" data-field="cough" onclick="selectSymptom(this)">
+                <div class="symptom-icon severe"><i class="fa fa-exclamation-triangle"></i></div>
+                <div class="symptom-text">Persistent</div>
+            </div>
+        </div>
+        <input type="hidden" name="cough" id="cough-input">
+    </div>
+    
+    <!-- Wheezing Section -->
+    <div class="symptom-section">
+        <label class="symptom-label"><i class="fa fa-wind"></i> Wheezing:</label>
+        <div class="symptom-options">
+            <div class="symptom-card" data-value="mild" data-field="wheezing" onclick="selectSymptom(this)">
+                <div class="symptom-icon mild"><i class="fa fa-volume-down"></i></div>
+                <div class="symptom-text">Mild</div>
+            </div>
+            <div class="symptom-card" data-value="moderate" data-field="wheezing" onclick="selectSymptom(this)">
+                <div class="symptom-icon moderate"><i class="fa fa-volume-up"></i></div>
+                <div class="symptom-text">Moderate</div>
+            </div>
+            <div class="symptom-card" data-value="severe" data-field="wheezing" onclick="selectSymptom(this)">
+                <div class="symptom-icon severe"><i class="fa fa-bullhorn"></i></div>
+                <div class="symptom-text">Severe</div>
+            </div>
+        </div>
+        <input type="hidden" name="wheezing" id="wheezing-input">
+    </div>
+</div>
+
+<style>
+.hidden-form {
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+.symptom-section {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 3px solid #007bff;
+}
+
+.symptom-label {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.symptom-label i {
+    margin-right: 6px;
+    color: #007bff;
+    font-size: 12px;
+}
+
+.symptom-options {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.symptom-card {
+    flex: 1;
+    min-width: 70px;
+    padding: 8px 4px;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.symptom-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.symptom-card.selected {
+    border-color: #007bff;
+    background: #e3f2fd;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+}
+
+.symptom-icon {
+    font-size: 16px;
+    margin-bottom: 4px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.symptom-icon.none {
+    color: #28a745;
+}
+
+.symptom-icon.mild {
+    color: #ffc107;
+}
+
+.symptom-icon.moderate {
+    color: #fd7e14;
+}
+
+.symptom-icon.severe {
+    color: #dc3545;
+}
+
+.symptom-text {
+    font-weight: 500;
+    color: #495057;
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.symptom-card.selected .symptom-text {
+    color: #007bff;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .symptom-options {
+        gap: 4px;
+    }
+    
+    .symptom-card {
+        min-width: 60px;
+        padding: 6px 2px;
+    }
+    
+    .symptom-text {
+        font-size: 10px;
+    }
+}
+</style>
+
+<script>
+function selectSymptom(card) {
+    const field = card.dataset.field;
+    const value = card.dataset.value;
+    
+    // Check if this card is already selected
+    const isAlreadySelected = card.classList.contains('selected');
+    
+    // Remove selected class from all cards in this group
+    const allCards = document.querySelectorAll(`[data-field="${field}"]`);
+    allCards.forEach(c => c.classList.remove('selected'));
+    
+    // Update hidden input
+    const input = document.getElementById(`${field}-input`);
+    
+    if (isAlreadySelected) {
+        // If it was already selected, unselect it (leave it unselected)
+        if (input) {
+            input.value = ''; // Clear the value
+        }
+    } else {
+        // If it wasn't selected, select it
+        card.classList.add('selected');
+        if (input) {
+            input.value = value;
+        }
+    }
+    
+    // Add visual feedback
+    card.style.animation = 'pulse 0.3s ease';
+    setTimeout(() => {
+        card.style.animation = '';
+    }, 300);
+    
+    // Auto-update record when symptom changes
+    if (typeof updateRecord === 'function') {
+        updateRecord();
+    }
+}
+
+// Add pulse animation
+const style = document.createElement('style');
+style.textContent = `
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+`;
+document.head.appendChild(style);
+</script>
