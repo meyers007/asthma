@@ -11,7 +11,7 @@ import geoapp.analytics as analytics
 def appcontext(request):
     context = {
         "appname": "Asthma",
-        "weburl" : "https://www.asthma.org/",
+        "weburl" : "https://asthma.geospaces.org/",
         "top_url": "asthma/topbar.html",
         "entire_top_url": "asthma/topbar.html",
         "APP_MENU" : 0,              # Show Application Menu in topbar

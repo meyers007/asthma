@@ -1,0 +1,3 @@
+export DEFAULT_APP=asthma
+export PORT=7005
+export LINK_APPS=

@@ -993,7 +993,7 @@ body {
         </button>
 
         {% if not user.is_authenticated %}
-            <a class="media-btn media-btn-signin" href="{% url 'account_login' %}"><i class="fas fa-sign-in-alt"></i><span class="our_menu"> Sign in</span></a>
+            <a class="media-btn media-btn-signin" href="{% url 'account_login' %}"><i class="fas fa-sign-in-alt"></i><span class="our_menu"></span></a>
         
         {% else  %}
                 <ul class="navbar-nav  mr-auto">
@@ -1378,7 +1378,16 @@ async function toggleAudioRecording() {
         }
     }
 }
-
+function updateRecordingTime() {
+    recordingTime.textContent = formatTime(Date.now() - recordingStartTime);
+}
+function formatTime(milliseconds) {
+    const seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`; 
+}
+    
 // Image Upload Functions
 function handleImageUpload(event) {
     const files = event.target.files;
@@ -1596,7 +1605,7 @@ function updateRecord() {
     
     if (!USER_ID){
         console.log('ERROR: No USER_ID, showing notification');
-        showUpdateNotification('Please login to update!');
+        showUpdateNotification('Please login to update!', 'btn-danger');
         return;
     }
     
