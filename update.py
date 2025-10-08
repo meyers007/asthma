@@ -4,17 +4,25 @@
 
 from  mangorest.mango import webapi
 import colabexts.utils as colabexts_utils
-import logging, os, datetime
-logger = logging.getLogger( "geoapp" )
+import logging, os, datetime, json
+logger = logging.getLogger( "asthma" )
+from dateutil import parser
 
 # ------------------------------------------------------------------------------
 @webapi("/asthma/update/")
 def updateRecord(request=None, **kwargs): 
     user_id = kwargs.get('user_id', '')
-    cur_time = kwargs.get('cur_time', '')  
+    cur_time = kwargs.get('cur_time', datetime.datetime.now().isoformat()) 
+    dt =parser.parse(cur_time)
+    ampm = ( dt.strftime('%p') == 'PM')
+
+    date = kwargs.get('date', '')  
     logger.info( f"+++++++++++ {user_id} {cur_time}" )
     if not user_id:
         return "no userid!!"
+
+    file = f"asthma/data/{user_id}_{date}.json"    
+    open(file, "w").write(json.dumps(kwargs, indent=2))
 
     return f"updated !!"
 

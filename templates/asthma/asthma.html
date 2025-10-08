@@ -776,7 +776,7 @@ body {
     gap: 15px;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
-    z-index: 10;
+    z-index: 1;
 }
 
 .bottom-media-section .media-buttons {
@@ -1600,8 +1600,36 @@ function updateRecordCB(responseTxt, statusTxt, xhr, context, formData) {
 }
 
 function updateRecord() {
+    if (!USER_ID){
+        console.log('ERROR: No USER_ID, showing notification');
+        showUpdateNotification('Please login to update!', 'btn-danger');
+        return;
+    }
+    
+    let data={
+        user_id:USER_ID,
+        cur_time:new Date().toLocaleString(),
+        pef:document.getElementById('pefInput').value,
+        date:document.getElementById('date').value,
+        breathing:document.getElementById('breathing-input').value,
+        cough:document.getElementById('cough-input').value,
+        wheezing:document.getElementById('wheezing-input').value,
+        inhaler_usage:document.getElementById('inhalerUsage-input').value,
+        effectiveness:document.getElementById('effectiveness-input').value,
+        notes:document.getElementById('notes').value,
+    }
+    
+    console.log('Sending data to /asthma/update/:', data);
+    callws('/asthma/update/', "", updateRecordCB, data);
+}
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function getRecordCB(responseTxt, statusTxt, xhr, context, formData) {
+    showUpdateNotification(responseTxt || 'Record updated');
+}
+
+function getRecord() {
     let CUR_TIME=new Date().toISOString();
-    console.log('=== updateRecord JavaScript function called ===');
+    console.log('=== getRecord JavaScript function called ===');
     
     if (!USER_ID){
         console.log('ERROR: No USER_ID, showing notification');
@@ -1612,21 +1640,21 @@ function updateRecord() {
     let data={
         user_id:USER_ID,
         cur_time:CUR_TIME,
-        pef:document.getElementById('pefInput').value,
-        //breathing:document.getElementById('breathingInput').value,
-        //cough:document.getElementById('coughInput').value,
-        //wheezing:document.getElementById('wheezingInput').value,
-        //environment:document.getElementById('environmentInput').value,
-        //triggers:document.getElementById('triggersInput').value,
-        //inhaler_usage:document.getElementById('inhalerUsageInput').value,
-        //effectiveness:document.getElementById('effectivenessInput').value,
-        //notes:document.getElementById('notesInput').value,
-        //media:mediaChunks,
-        //audio:audioChunks,
+        date:document.getElementById('date').value,
     }
     
-    console.log('Sending data to /asthma/update/:', data);
-    callws('/asthma/update/', "", updateRecordCB, data);
+    console.log('Sending data to /asthma/get/:', data);
+    callws('/asthma/getRecord/', "", getRecordCB, data);
+}
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function getRecordCB(responseTxt, statusTxt, xhr, context, formData) {
+    console.log('=== getRecordCB callback called ===');
+    console.log('Response:', responseTxt);
+    console.log('Status:', statusTxt);
+    console.log('XHR:', xhr);
+    
+    // Show a subtle notification instead of alert
+    showUpdateNotification(responseTxt || 'Record updated');
 }
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Show a subtle update notification
@@ -1670,7 +1698,7 @@ function setupAutoUpdate() {
     // Date input
     const dateInput = document.getElementById('date');
     if (dateInput) {
-        dateInput.addEventListener('change', updateRecord);
+        dateInput.addEventListener('change', getRecord);
     }
     
     // PEF slider
